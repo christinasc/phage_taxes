@@ -1,6 +1,12 @@
 Python script to check if people registered on ThePhage.org and paid camp tax. Example csv files included.
 Does a comparison between thephage.org csv download and wepay guest list csv file
 
+example:
+
+  <code>
+  python tax_comparator.py the-phage-2013-2013-07-31.csv tickets_guests_155731_2013-07-31.csv
+  </code>
+
 usage: tax_comparator.py [-h] phage_csv wepay_csv
 
 positional arguments:
@@ -31,8 +37,7 @@ HowTo:
 </a>
 
 <li> Step 4. Run script in shell, e.g.<br/>
-<b>
   % python tax_comparator.py the-phage-2013-2013-07-31.csv tickets_guests_155731_2013-07-31.csv
-</b>
+
 
 </ul>
