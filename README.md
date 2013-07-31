@@ -13,13 +13,13 @@ HowTo:
 Step 1. Download a copy of this repository 
 Step 2. Export camp directory from thephage.org
 
-<img src="https://raw.github.com/christinasc/phage_taxes/master/images/thephage.org_csv.png"/>
+<img src="https://raw.github.com/christinasc/phage_taxes/master/images/thephage.org_csv.png" width="600"/>
 
 Step 3. Export guestlist from wepay.com 
 
-<img src="https://raw.github.com/christinasc/phage_taxes/master/images/phage_wepay1.png"/>
+<img src="https://raw.github.com/christinasc/phage_taxes/master/images/phage_wepay1.png" width="500" />
 
-<img src="https://raw.github.com/christinasc/phage_taxes/master/images/phage_wepay2.png"/>
+<img src="https://raw.github.com/christinasc/phage_taxes/master/images/phage_wepay2.png" width="500"/>
 
 Step 4. Run script, e.g.
 
