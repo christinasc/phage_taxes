@@ -22,7 +22,7 @@ Step 3. Export guestlist from wepay.com
 <img src="https://raw.github.com/christinasc/phage_taxes/master/images/phage_wepay2.png" width="500"/>
 
 Step 4. Run script in shell, e.g.
-
+<code>
   % python tax_comparator.py the-phage-2013-2013-07-31.csv tickets_guests_155731_2013-07-31.csv
-
+</code>
 
