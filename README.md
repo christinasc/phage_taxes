@@ -1,4 +1,7 @@
-Python script to check if people registered on ThePhage.org and paid camp tax. Example csv files included.
+Python script to check if people registered on ThePhage.org and paid camp tax. 
+
+Example csv files included in the csv directory here.
+
 Does a comparison between thephage.org csv download and wepay guest list csv file
 
 example:
