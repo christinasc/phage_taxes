@@ -178,6 +178,7 @@ def main():
     new_phage_csv = dir_csv + 'new_phage.csv'
     new_wepay_csv = dir_csv + 'new_wepay.csv'
     new_exempt_csv = dir_csv + 'new_exempt.csv'
+    new_transfer_csv = dir_csv + 'new_transfer.csv'
 
     get_headerInfo(phageDict, phage_csv)
     create_cleanFile(phageDict, phage_csv, new_phage_csv, True, "regular")
@@ -186,11 +187,14 @@ def main():
     # this line must go before getHeaderInfo for wepay, because it uses phageDict from phage
     create_cleanFile(phageDict, phage_csv, new_exempt_csv, True, "Exemption Code")
 
+    # tax transfers
+    create_cleanFile(phageDict, phage_csv, new_transfer_csv, True, "TaxTransfer")
+
     get_headerInfo(phageDict, wepay_csv) # update phageDict for Wepay
     create_cleanFile(phageDict, wepay_csv, new_wepay_csv, False, "")
     ## print "Wepay Dict: %s" %  phageDict
 
-    ## who is tax exempt?  - case independent
+    ## who is tax exempt?  
     exempt = tax_exempt(new_exempt_csv)
 
     ## who hasn't paid tax?  - case independent
