@@ -35,7 +35,7 @@ def get_headerInfo(aDict, csvfile): # figure out where are the columns that matt
     ifile.close()
 
 
-def create_cleanFile(aDict, csv_in, csv_out, isphage):  # grab regular camp tax entries only 
+def create_cleanFile(aDict, csv_in, csv_out, isphage, param):  # grab regular camp tax entries only 
     ifile  = open(csv_in, "rb")
     with ifile as source: 
         rdr = csv.reader(source)
@@ -44,7 +44,7 @@ def create_cleanFile(aDict, csv_in, csv_out, isphage):  # grab regular camp tax 
             if isphage:
                 in_iter = ((r[int(aDict['First'])],
                             r[int(aDict['Last'])],
-                            r[int(aDict['Email'])]) for r in rdr if "regular" in r[int(aDict['Phage Camp Taxes'])]) 
+                            r[int(aDict['Email'])]) for r in rdr if param in r[int(aDict['Phage Camp Taxes'])]) 
             else:
                 in_iter = ((r[int(aDict['First'])],
                             r[int(aDict['Last'])],
@@ -53,7 +53,15 @@ def create_cleanFile(aDict, csv_in, csv_out, isphage):  # grab regular camp tax 
     
     ifile.close()
     
-
+def tax_exempt(csv_exempt):
+    ifile  = open(csv_exempt, "rb")
+    exempt = csv.reader(ifile)
+    total_exempt =0
+    for row in exempt:
+        total_exempt +=1
+    ifile.close()
+    return total_exempt
+    
 
 def tax_missing(csv_phage, csv_wepay):
     ifile  = open(csv_phage, "rb")
@@ -79,15 +87,9 @@ def tax_missing(csv_phage, csv_wepay):
                 notPaid.append(row)
         a_rownum += 1
                 
-    print "\nCamp Tax Not Paid, but Registered on ThePhage.org"
-    print "Total: %s " % len(notPaid)
-    print "=============================="
-    for row in notPaid:
-        print "%s %s, %s" % (row[0], row[1], row[2])
-    print "\n"
-        
     ifile.close()
     wfile.close()
+    return notPaid
 
 
 def reg_missing(csv_phage, csv_wepay):
@@ -114,17 +116,11 @@ def reg_missing(csv_phage, csv_wepay):
         if row[0].title().strip() not in firstname:
             if row[1].title().strip() not in lastname:
                 notRegistered.append(row)
-        a_rownum += 1
-                
-    print "Not Registered on ThePhage.org, but paid on WePay"
-    print "Total: %s " % len(notRegistered)
-    print "=============================="
-    for row in notRegistered:
-        print "%s %s, %s" % (row[0], row[1], row[2])
-    print "\n"
+        a_rownum += 1        
 
     ifile.close()
     wfile.close()
+    return notRegistered
 
 
 def duplicate_reg(csv_phage, csv_wepay):
@@ -134,9 +130,11 @@ def duplicate_reg(csv_phage, csv_wepay):
     for row in phage:
         emails.append(row[2])
     ifile.close()
-    test_distinct(emails)
+    diff, total = test_distinct(emails)
+    dup_emails = get_duplicate_entry(emails)
     ifile.close()
-
+    return diff, total, dup_emails
+    
 
 def get_duplicate_entry(input):
   unique_output = []
@@ -154,14 +152,8 @@ def test_distinct(mylist):
     distinct = list(set(mylist))
     d_num = len(distinct)
     l_num = len(mylist)
-    if (d_num != l_num):
-        print "ThePhage.org directory has the following Duplicate Entries:"
-        print "=============================="
-        print " %s " %  get_duplicate_entry(mylist)
-        print "\nDistinct Entries on ThePhage.org for Regular Tax: %s" % d_num
-        print "Total Listed Entries : %s" % l_num
-    else: 
-        print "ThePhage.org directory has No Duplicates. Yay!"
+    diff = l_num-d_num
+    return (diff, l_num)
 
 
 def main(): 
@@ -177,10 +169,6 @@ def main():
 
     args = parser.parse_args() 
 
-    print "Using the following CSV files:"
-    print(args.phage_csv)
-    print(args.wepay_csv)
-
     phage_csv = args.phage_csv
     wepay_csv = args.wepay_csv
 
@@ -189,24 +177,83 @@ def main():
 
     new_phage_csv = dir_csv + 'new_phage.csv'
     new_wepay_csv = dir_csv + 'new_wepay.csv'
+    new_exempt_csv = dir_csv + 'new_exempt.csv'
 
     get_headerInfo(phageDict, phage_csv)
-    create_cleanFile(phageDict, phage_csv, new_phage_csv, True)
+    create_cleanFile(phageDict, phage_csv, new_phage_csv, True, "regular")
     ## print "Phage Dict: %s" %  phageDict
 
-    get_headerInfo(phageDict, wepay_csv)
-    create_cleanFile(phageDict, wepay_csv, new_wepay_csv, False)
+    # this line must go before getHeaderInfo for wepay, because it uses phageDict from phage
+    create_cleanFile(phageDict, phage_csv, new_exempt_csv, True, "Exemption Code")
+
+    get_headerInfo(phageDict, wepay_csv) # update phageDict for Wepay
+    create_cleanFile(phageDict, wepay_csv, new_wepay_csv, False, "")
     ## print "Wepay Dict: %s" %  phageDict
 
+    ## who is tax exempt?  - case independent
+    exempt = tax_exempt(new_exempt_csv)
+
     ## who hasn't paid tax?  - case independent
-    tax_missing(new_phage_csv, new_wepay_csv)
+    notPaid = tax_missing(new_phage_csv, new_wepay_csv)
+    tnum = len(notPaid)
 
     ## who has not registered but paid tax?  - case independent
-    reg_missing(new_phage_csv, new_wepay_csv)
+    notRegistered = reg_missing(new_phage_csv, new_wepay_csv)
+    rnum = len(notRegistered)
 
     ## find and show any duplicate registration on ThePhage.org
-    duplicate_reg(new_phage_csv, new_wepay_csv)
+    dupNum, total_entries, dup_emails  = duplicate_reg(new_phage_csv, new_wepay_csv)
 
+    regularTax = total_entries - dupNum + rnum
+    totalCampers = regularTax + exempt
+
+    # print number of campers
+    print "=============================="
+    print "Total Number of Campers: %s " % totalCampers
+    print "Exempt: %s " % exempt
+    print "Regular: %s " % regularTax
+
+    # print thephage.org stats
+    print "=============================="
+    print "Regular Camp Tax Entries on ThePhage.org : %s" % total_entries
+    print "Registered on The Phage, not Paid : %s" % tnum
+    print "Paid Tax, not Registered : %s" % rnum
+    print "=============================="
+
+    # print unpaid tax
+    print "\n"
+    print "Camp Tax Not Paid, but Registered on ThePhage.org"
+    print "Go here to pay tax: https://www.wepay.com/events/phagecamp"
+    print "Total: %s " % len(notPaid)
+
+    print "=============================="
+    for row in notPaid:
+        print "%s %s, %s" % (row[0], row[1], row[2])
+
+    # print not registered on thephage.org
+    print "\n"
+    print "Not Registered on http://ThePhage.org, but paid on WePay"
+    print "Total: %s " % len(notRegistered)
+    print "=============================="
+    for row in notRegistered:
+        print "%s %s, %s" % (row[0], row[1], row[2])
+    print "\n"
+
+    # print duplicate entries on thephage.org
+    if (dupNum != 0):
+        print "ThePhage.org directory has the following Duplicate Entries:"
+        print "============================================================"
+        print " %s " %  dup_emails
+        print "\nDistinct Entries on ThePhage.org for Regular Tax: %s" % d_num    
+    else: 
+        print "ThePhage.org directory has No Duplicates. Yay!"
+        print "================================================"
+
+    # print csv file usage
+    print "\n"
+    print "Using the following CSV files:"
+    print(args.phage_csv)
+    print(args.wepay_csv)
 
 
 if __name__ == '__main__':
