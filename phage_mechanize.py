@@ -18,11 +18,11 @@ MAIN_PATH = '/Users/Christina/Phage2013/phage_taxes/'  # replace this line with 
 #PHAGE_INFO = MAIN_PATH +'info/phage_login.txt'
 #WP_INFO = MAIN_PATH +'info/wepay_login.txt'
 
-WP_USERNAME = 'phage.finance@gmail.com'
-WP_PASSWORD = 'meloveSL13'
+WP_USERNAME = ''
+WP_PASSWORD = ''
 
-PHAGE_LOGIN = 'admin'
-PHAGE_PASSWORD = 'phage123'
+PHAGE_LOGIN = '' 
+PHAGE_PASSWORD = ''
 
 csvFiles = 'csvFiles/'
 webFiles = 'webFiles/'
