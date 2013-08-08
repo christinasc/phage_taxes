@@ -208,8 +208,15 @@ def main():
     pinfo = open(PHAGE_INFO, 'r')
     winfo = open(WP_INFO, 'r')
 
-    PHAGE_LOGIN, PHAGE_PASSWORD = pinfo.readline().split(',')encode('utf-8').strip()
-    WP_LOGIN, WP_PASSWORD = winfo.readline().split(',').encode('utf-8').strip()
+    user, pwd = pinfo.readline().split(',')
+    PHAGE_LOGIN = user.encode('utf-8').strip()
+    PHAGE_PASSWORD = pwd.encode('utf-8').strip()
+
+    user, pwd = winfo.readline().split(',')
+    WP_LOGIN = user.encode('utf-8').strip()
+    WP_PASSWORD = pwd.encode('utf-8').strip()
+
+    print PHAGE_LOGIN, PHAGE_PASSWORD
 
     mkdir_p(SAVE_PATH)
     mkdir_p(CSV_PATH)
