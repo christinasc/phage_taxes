@@ -15,8 +15,8 @@ MAIN_PATH = '/Users/Christina/Phage2013/phage_taxes/'  # replace this line with 
 # make your own login.txt files in the format for each file - one line: 
 # "username", "password"
 
-#PHAGE_INFO = MAIN_PATH +'info/phage_login.txt'
-#WP_INFO = MAIN_PATH +'info/wepay_login.txt'
+PHAGE_INFO = MAIN_PATH +'info/phage_login.txt'
+WP_INFO = MAIN_PATH +'info/wepay_login.txt'
 
 WP_USERNAME = ''
 WP_PASSWORD = ''
@@ -201,15 +201,15 @@ def makeWepayInvoiceCSV():
 
 
 def main():
-
-#    pinfo = open(PHAGE_INFO, 'r')
-#    winfo = open(WP_INFO, 'r')
-
-#    PHAGE_LOGIN, PHAGE_PASSWORD = pinfo.readline().split(',')
-#   WP_LOGIN, WP_PASSWORD = winfo.readline().split(',')
-
-#    shutil.rmtree(SAVE_PATH)  # deletes old files
+    
+#    shutil.rmtree(SAVE_PATH)  # deletes old files, needs to check if exists first, todo
 #    shutil.rmtree(CSV_PATH)
+
+    pinfo = open(PHAGE_INFO, 'r')
+    winfo = open(WP_INFO, 'r')
+
+    PHAGE_LOGIN, PHAGE_PASSWORD = pinfo.readline().split(',')encode('utf-8').strip()
+    WP_LOGIN, WP_PASSWORD = winfo.readline().split(',').encode('utf-8').strip()
 
     mkdir_p(SAVE_PATH)
     mkdir_p(CSV_PATH)
