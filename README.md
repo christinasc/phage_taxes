@@ -1,5 +1,8 @@
 Python script to check if people registered on ThePhage.org and paid camp tax. 
 
+The files in the cloud directory were uploaded to picloud.com and run as a daily cron job that sends an email out with the parsed and cross checked results. 
+
+========
 Example csv files included in the csv directory here.
 
 Does a comparison between thephage.org csv download and wepay guest list csv file
