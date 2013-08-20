@@ -1,0 +1,6 @@
+Items Todo: 
+
+. in new_pmechanize.py: move all static variables into pconfig.py
+
+. in new_comparator.py: Add person to total head count if "paid tax, not registered,
+ but omit them if they are a tax transfer"

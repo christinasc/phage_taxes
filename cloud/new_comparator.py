@@ -316,7 +316,7 @@ def main():
     print "Total Number of Campers: %s " % totalCampers
     print "Exempt: %s " % exempt
     print "Regular + Transfers: %s " % regular_transfers
-    ### TODO: Add Persons from "paid tax, not registered, 
+    ### TODO: Add persons to total head count if "paid tax, not registered, 
     ### but omit them if they are a tax transfer"
 
     # print thephage.org stats

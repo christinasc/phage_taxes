@@ -1,0 +1,25 @@
+#!/usr/bin/python
+
+# Specifying the from and to addresses 
+fromaddr = 'phage.finance@gmail.com'
+#toaddrs  = 'christinasc@gmail.com, tristan.ursell@gmail.com, phage.finance@gmail.com'
+toaddrs  = 'christinasc@gmail.com, phage.finance@gmail.com'
+
+runscr = 'python new_pmechanize.py'
+
+########
+
+MAIN_PATH = '/Users/Christina/Phage2013/phage_taxes/cloud/'  
+# replace this line with your path
+
+# add your own username, password
+WP_USERNAME = ''
+WP_PASSWORD = ''
+
+PHAGE_LOGIN = ''
+PHAGE_PASSWORD = ''
+
+# Gmail Login 
+username = ''
+password = ''
+

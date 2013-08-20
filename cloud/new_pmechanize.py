@@ -27,7 +27,6 @@ wepaycsv = CSV_PATH+'wepay.csv'
 wepayinvoicecsv = CSV_PATH+'wepay_invoice.csv'
 
 
-
 def mkdir_p(path):
     try:
         os.makedirs(path)
@@ -191,12 +190,10 @@ def makeWepayInvoiceCSV():
 
 def main():
 
-    if os.path.isdir(SAVE_PATH):
-        shutil.rmtree(SAVE_PATH)  # deletes old files, needs to check if exists first, todo  
-
-    if os.path.isdir(SAVE_PATH):
-        shutil.rmtree(CSV_PATH)   
-        
+#    if os.path.isdir(SAVE_PATH):
+#        shutil.rmtree(SAVE_PATH)  # deletes old files, needs to check if exists first, todo  
+#    if os.path.isdir(SAVE_PATH):
+#        shutil.rmtree(CSV_PATH)          
 
     mkdir_p(SAVE_PATH)
     mkdir_p(CSV_PATH)
@@ -211,7 +208,8 @@ def main():
 
     makePhageCSV()
     makeWepayCSV()
-    makeWepayInvoiceCSV()     # Note: csv file has extra comma for entries, but not header
+    makeWepayInvoiceCSV()
+    # Note: csv file has extra comma for entries, but not header
 
     if os.path.isdir(pconfig.MAIN_PATH):
         csv_compare = pconfig.MAIN_PATH + "new_comparator.py "

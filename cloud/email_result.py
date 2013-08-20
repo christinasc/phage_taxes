@@ -3,23 +3,16 @@ import smtplib, datetime
 import os, pconfig
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
-
-# Specifying the from and to addresses 
-fromaddr = 'phage.finance@gmail.com'
-#toaddrs  = 'christinasc@gmail.com, tristan.ursell@gmail.com, phage.finance@gmail.com'
-toaddrs  = 'christinasc@gmail.com, phage.finance@gmail.com'
+import pconfig
  
 csv_result = pconfig.MAIN_PATH+"output.txt"
 #csv_result = "output.txt"
 # Writing the message (this message will appear in the email)
 msg = 'Enter you message here'
- 
 
 def main():
 
-    runscr = 'python new_pmechanize.py'
-    os.system(runscr)
-
+    os.system(pconfig.runscr)
     now = datetime.datetime.now()
 #    print str(now)
 
@@ -35,8 +28,8 @@ def main():
         body = " Could not generate result; possible website connection problem "
 
     msg = MIMEMultipart()
-    msg['From'] = fromaddr
-    msg['To'] = toaddrs
+    msg['From'] = pconfig.fromaddr
+    msg['To'] = pconfig.toaddrs
     msg['Subject'] = " %d-%d-%d : Phage Tax Update" % (now.month, now.day,now.year)
     msg.attach(MIMEText(body, 'html'))
     
@@ -49,12 +42,11 @@ def main():
     server.starttls()
     server.ehlo()
     server.login(pconfig.username,pconfig.password)
-    server.sendmail(fromaddr, toaddrs, text)
+    server.sendmail(pconfig.fromaddr, pconfig.toaddrs, text)
     server.quit()
 
     
 # rm -rf csv csvFiles/ webFiles/ output.txt pconfig.pyc 
-
 
 
 if __name__ == "__main__":
