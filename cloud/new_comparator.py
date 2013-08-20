@@ -302,8 +302,12 @@ def main():
     ## find and show any duplicate registration on ThePhage.org
     dupNum, total_entries, dup_emails  = duplicate_reg(new_phage_csv, new_wepay_csv)
 
-    regularTax = total_entries - dupNum + rnum
-    totalCampers = regularTax + exempt
+    regularTax = total_entries - dupNum
+
+    regular_transfers = regularTax + len(transfers)
+
+    totalCampers =  exempt + regular_transfers
+
 
     print "\n ****** This is an Automatically Generated Email. *******\n " 
 
@@ -311,11 +315,14 @@ def main():
     print "=============================="
     print "Total Number of Campers: %s " % totalCampers
     print "Exempt: %s " % exempt
-    print "Regular: %s " % regularTax
+    print "Regular + Transfers: %s " % regular_transfers
+    ### TODO: Add Persons from "paid tax, not registered, 
+    ### but omit them if they are a tax transfer"
 
     # print thephage.org stats
     print "=============================="
     print "Regular Camp Tax Entries on ThePhage.org : %s" % total_entries
+    print "Tax Transfers: %s " % len(transfers)
     print "Registered on The Phage, not Paid : %s" % len(notPaid)
     print "Paid Tax, not Registered : %s" % rnum
     print "==============================\n"
